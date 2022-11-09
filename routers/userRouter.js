@@ -1,6 +1,7 @@
 const express = require('express');
 const { User } = require('../models/users');
 const router = express.Router();
+const bcrypt = require('bcrypt');
 
 const newUser = async (req, res) => {
   let user = await User.findOne({ email: req.body.email });
@@ -10,6 +11,10 @@ const newUser = async (req, res) => {
     email: req.body.email,
     password: req.body.password
   });
+  const salt = await bcrypt.genSalt(10);
+  // console.log(salt);
+  user.password = await bcrypt.hash(user.password, salt);
+  // console.log(hassedPass);
   try {
     const result = await user.save();
     res.send({
