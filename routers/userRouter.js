@@ -2,6 +2,7 @@ const express = require('express');
 const { User } = require('../models/users');
 const router = express.Router();
 const bcrypt = require('bcrypt');
+const authorize = require('../middleware/authorize');
 
 const newUser = async (req, res) => {
   let user = await User.findOne({ email: req.body.email });
@@ -34,7 +35,13 @@ const newUser = async (req, res) => {
   }
 }
 
+const getUsers = async (req, res) => {
+  const allUser = await User.find({});
+  res.send(allUser);
+}
+
 router.route('/')
-  .post(newUser);
+  .post(newUser)
+  .get(authorize, getUsers)
 
 module.exports = router;
