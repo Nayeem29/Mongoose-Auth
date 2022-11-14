@@ -17,9 +17,13 @@ const newUser = async (req, res) => {
   // console.log(hassedPass);
   try {
     const result = await user.save();
+    const token = user.generateJWT();
     res.send({
-      name: result.name,
-      email: result.email
+      token: token,
+      data: {
+        name: result.name,
+        email: result.email
+      }
     });
   } catch (err) {
     const error = [];
