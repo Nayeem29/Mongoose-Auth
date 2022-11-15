@@ -3,6 +3,7 @@ const { User } = require('../models/users');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const authorize = require('../middleware/authorize');
+const admin = require('../middleware/admin');
 
 const newUser = async (req, res) => {
   let user = await User.findOne({ email: req.body.email });
@@ -40,8 +41,25 @@ const getUsers = async (req, res) => {
   res.send(allUser);
 }
 
+const deleteUser = async (req, res) => {
+  const email = req.params.email;
+  const removeUser = await User.deleteOne({ email: email });
+  res.send(removeUser);
+}
+
+const updateUser = async (req, res) => {
+  const email = req.params.email;
+  const updateRole = await User.updateOne({ email: email }, { "role": "admin" })
+  // await updateRole.save();
+  res.send(updateRole);
+}
+
 router.route('/')
   .post(newUser)
   .get(authorize, getUsers)
+
+router.route('/:email')
+  .delete([authorize, admin], deleteUser)
+  .patch(authorize, updateUser)
 
 module.exports = router;

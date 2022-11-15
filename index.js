@@ -16,6 +16,8 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/user', usersRouter);
 app.use('/signin', userAuth);
 app.use('/allUser', usersRouter);
+app.use('/deleteUser', usersRouter);
+app.use('/updateRole', usersRouter);
 
 app.get("/", (req, res) => {
   res.send("App is running...")

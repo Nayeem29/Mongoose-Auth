@@ -13,7 +13,7 @@ module.exports = function (req, res, next) {
     next();
   } catch (error) {
     console.log(error);
-    return res.status(400).send("Not Found")
+    return res.status(400).send("Not Found");
   }
 
 }
